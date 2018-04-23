@@ -6,7 +6,7 @@ from collections import Counter
 
 def get_console_arguments():
     parser = argparse.ArgumentParser()
-    parser.add_argument('directory', help='enter a directory path')
+    parser.add_argument('path', help='enter a directory path')
     args = parser.parse_args()
     return args
 
@@ -17,17 +17,14 @@ def get_file_name_and_size(file_path):
     return file_name, file_size
 
 
-def get_all_files_in_directory(path, file_info):
-    for file_system_object in path.iterdir():
-        if file_system_object.is_dir():
-            file_info = get_all_files_in_directory(
-                file_system_object,
-                file_info
-            )
-        if file_system_object.is_file():
-            file_name_and_size = get_file_name_and_size(file_system_object)
-            file_info[file_system_object] = file_name_and_size
-    return file_info
+def get_all_files_in_directory(path):
+    file_info_dict = {}
+    for path, dirnames, filenames in os.walk(path):
+        for file_name in filenames:
+            file_path = os.path.join(path, file_name)
+            file_size = os.path.getsize(file_path)
+            file_info_dict[file_path] = (file_name, file_size)
+    return file_info_dict
 
 
 def get_paths_of_duplicate_file(duplicate_name_and_size, all_files_info):
@@ -58,9 +55,8 @@ def get_name_and_path_of_duplicates(duplicate_counter_items, all_files_items):
     return duplicates_dict
 
 
-def get_duplicate_file_name_and_paths(path):
-    file_information = {}
-    all_files_info = get_all_files_in_directory(path, file_information)
+def get_duplicate_file_names_and_paths(path):
+    all_files_info = get_all_files_in_directory(path)
     duplicate_counter = Counter(all_files_info.values())
     all_duplicates = get_name_and_path_of_duplicates(
         duplicate_counter.items(),
@@ -80,14 +76,14 @@ def print_duplicates(duplicate_dict):
 
 if __name__ == '__main__':
     console_arguments = get_console_arguments()
-    user_path = console_arguments.directory
+    user_path = console_arguments.path
     directory_existing = os.path.exists(user_path)
-    if not directory_existing:
-        exit('Can not find the directory.')
-    user_path = pathlib.Path(user_path)
-    if not user_path.is_dir():
-        exit('The entered path is not a directory path.')
-    duplicates = get_duplicate_file_name_and_paths(
+    # if not directory_existing:
+    #     exit('Can not find the directory.')
+    # user_path = pathlib.Path(user_path)
+    # if not user_path.is_dir():
+    #     exit('The entered path is not a directory path.')
+    duplicates = get_duplicate_file_names_and_paths(
         user_path
     )
     print_duplicates(duplicates)

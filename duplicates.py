@@ -65,14 +65,15 @@ def get_duplicate_file_names_and_paths(path):
 
 
 def print_duplicates(duplicate_dict):
-    if not bool(duplicate_dict):
-        exit('The directory does not contain duplicate files.')
-    print('The directory contains these duplicate files:')
-    for file in duplicate_dict:
-        print(file)
-        all_paths = duplicate_dict[file]
-        for path in all_paths:
-            print('       {}'.format(path))
+    if not duplicate_dict:
+        print('The directory does not contain duplicate files.')
+    if duplicate_dict:
+        print('The directory contains these duplicate files:')
+        for file in duplicate_dict:
+            print(file)
+            all_paths = duplicate_dict[file]
+            for path in all_paths:
+                print('       {}'.format(path))
 
 
 if __name__ == '__main__':

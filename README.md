@@ -1,6 +1,6 @@
 # Anti-Duplicator
 
-This sctipt gets a directory path (relative or absolute) and returns names and paths of
+This script gets a directory path (relative or absolute) and returns names and paths of
 duplicate files located in this directory.
 
 # Quick start

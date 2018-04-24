@@ -65,6 +65,8 @@ def get_duplicate_file_names_and_paths(path):
 
 
 def print_duplicates(duplicate_dict):
+    if not bool(duplicate_dict):
+        exit('The directory does not contain duplicate files.')
     print('The directory contains these duplicate files:')
     for file in duplicate_dict:
         print(file)

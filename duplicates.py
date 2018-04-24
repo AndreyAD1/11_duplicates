@@ -1,6 +1,5 @@
 import argparse
 import os
-import pathlib
 from collections import Counter
 
 
@@ -77,13 +76,9 @@ def print_duplicates(duplicate_dict):
 if __name__ == '__main__':
     console_arguments = get_console_arguments()
     user_path = console_arguments.path
-    directory_existing = os.path.exists(user_path)
-    # if not directory_existing:
-    #     exit('Can not find the directory.')
-    # user_path = pathlib.Path(user_path)
-    # if not user_path.is_dir():
-    #     exit('The entered path is not a directory path.')
-    duplicates = get_duplicate_file_names_and_paths(
-        user_path
-    )
+    if not os.path.exists(user_path):
+        exit('Can not find the directory.')
+    if not os.path.isdir(user_path):
+        exit('The entered path is not a directory path.')
+    duplicates = get_duplicate_file_names_and_paths(user_path)
     print_duplicates(duplicates)
